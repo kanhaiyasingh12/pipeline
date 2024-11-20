@@ -6,9 +6,6 @@ FROM docker.io/nginx:latest
 # COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy static website files (HTML, CSS, JS, etc.)
-# Assuming your website files are in a folder called 'html'
-COPY ./html /usr/share/nginx/html
-
 # Expose port 80 to access the web server
 EXPOSE 80
 
