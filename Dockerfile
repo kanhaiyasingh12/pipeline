@@ -1,7 +1,7 @@
 # Use the official Nginx image from the Docker Hub
-FROM nginx:latest
+FROM docker.io/nginx:latest
 
-# Copy custom Nginx configuration (optional)
+# Cpy custom Nginx configuration (optional)
 # If you have a custom nginx.conf, copy it into the container
 # COPY nginx.conf /etc/nginx/nginx.conf
 
