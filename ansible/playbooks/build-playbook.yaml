@@ -1,0 +1,24 @@
+---
+ - name: build-playbook
+   hosts: build_server
+   vars:
+     BUILD_ID: ""
+     JOB_NAME: ""
+     docker_hub_account: ""
+   tasks:
+    - name: docker image build
+      shell: sudo docker image build -t "{{ JOB_NAME }}":"{{ BUILD_ID }}" /opt/.
+    - name: tagging image according to build number
+      shell: sudo docker image tag "{{ JOB_NAME }}":"{{ BUILD_ID }}" "{{ docker_hub_account }}"/"{{ JOB_NAME }}":"{{ BUILD_ID }}"
+    - name: tagging image as latest
+      shell: sudo docker image tag "{{ JOB_NAME }}":"{{ BUILD_ID }}" "{{ docker_hub_account }}"/"{{ JOB_NAME }}":latest
+    - name: pushing image on dockerhub with build id
+      shell: sudo docker image push "{{ docker_hub_account }}"/"{{ JOB_NAME }}":"{{ BUILD_ID }}"
+    - name: pushing image on dockerhub with tag latest
+      shell: sudo docker image push "{{ docker_hub_account }}"/"{{ JOB_NAME }}":latest
+    - name: removing image locally
+      shell: sudo docker rmi "{{ JOB_NAME }}":"{{ BUILD_ID }}"
+    - name: removing image tagged with build id
+      shell: sudo docker rmi "{{ docker_hub_account }}"/"{{ JOB_NAME }}":"{{ BUILD_ID }}"
+    - name: removing image tagged with latest
+      shell: sudo docker rmi "{{ docker_hub_account }}"/"{{ JOB_NAME }}":latest
