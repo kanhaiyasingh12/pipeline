@@ -1,24 +1,16 @@
-# Use the official Ubuntu base image
-FROM ubuntu:latest
+# Use the official Nginx image from the Docker Hub
+FROM nginx:latest
 
-# Set environment variables to avoid user interaction during package installation
-ENV DEBIAN_FRONTEND=noninteractive
+# Copy custom Nginx configuration (optional)
+# If you have a custom nginx.conf, copy it into the container
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-# Update the package list and install any necessary packages
-RUN apt-get update && \
-    apt-get install -y \
-    curl \
-    wget \
-    vim \
-    git \
-    build-essential \
-    && apt-get clean
+# Copy static website files (HTML, CSS, JS, etc.)
+# Assuming your website files are in a folder called 'html'
+COPY ./html /usr/share/nginx/html
 
-# Set the working directory inside the container
-WORKDIR /app
+# Expose port 80 to access the web server
+EXPOSE 80
 
-# Copy the current directory contents into the container
-COPY . /app
-
-# Set a default command to be run when the container starts
-CMD ["bash"]
+# Start Nginx in the foreground (default in the official image)
+CMD ["nginx", "-g", "daemon off;"]
